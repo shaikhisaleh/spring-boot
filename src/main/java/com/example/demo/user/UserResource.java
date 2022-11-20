@@ -21,7 +21,15 @@ public class UserResource {
     }
     @GetMapping(path = "/users/{id}")
     public User findUserById(@PathVariable int id){
-        return service.findOne(id);
+        User user =  service.findOne(id);
+        if (user == null){
+            throw new UserNotFoundException("id"+id);
+        }
+        return user;
+    }
+    @DeleteMapping(path = "/users/{id}")
+    public void deleteUserById(@PathVariable int id){
+        service.removeUserById(id);
     }
     @PostMapping(path="/users")
     public ResponseEntity<User> createUser(@RequestBody User user){
