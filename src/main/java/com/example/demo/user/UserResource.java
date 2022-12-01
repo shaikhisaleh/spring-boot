@@ -6,21 +6,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+
 import java.net.URI;
 import java.util.List;
 
 @RestController
+@RequestMapping("/users")
 public class UserResource {
     private UserDaoService service;
     public UserResource(UserDaoService service){
         this.service = service;
     }
 
-    @GetMapping(path="/users")
+    @GetMapping
     public List<User> retrieveAllUsers(){
         return service.findAll();
     }
-    @GetMapping(path = "/users/{id}")
+    @GetMapping(path = "/{id}")
     public User findUserById(@PathVariable int id){
         User user =  service.findOne(id);
         if (user == null){
@@ -28,11 +30,11 @@ public class UserResource {
         }
         return user;
     }
-    @DeleteMapping(path = "/users/{id}")
+    @DeleteMapping(path = "/{id}")
     public void deleteUserById(@PathVariable int id){
         service.removeUserById(id);
     }
-    @PostMapping(path="/users")
+    @PostMapping
     public ResponseEntity<User> createUser(@Valid @RequestBody User user){
         User savedUser =service.addUser(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
